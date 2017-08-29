@@ -329,13 +329,18 @@ export class ViewEditor extends Component {
     }
   }
 
-  _handlePanResponderEnd() {
+  _handlePanResponderEnd(e) {
     if (this._onPress && (
       (this._totalMovedX < 30 && this._totalMovedY < 30)
     )) {
       clearTimeout(this._onPress);
       this._onPress = null;
-      this.props.onPressCallback();
+      this.props.onPressCallback({
+        locationX: e.nativeEvent.locationX,
+        locationY: e.nativeEvent.locationY,
+        pageX: e.nativeEvent.pageX,
+        pageY: e.nativeEvent.pageY
+      });
     }
     if (this._onLongPress) {
       clearTimeout(this._onLongPress);
@@ -432,7 +437,7 @@ export class ViewEditor extends Component {
       return takeSnapshot(this.viewRef, {
         quality: 1,
         result: 'file',
-        format: 'jpg',       
+        format: 'jpg',
         width: undefined,
         height: undefined
       })
